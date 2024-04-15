@@ -211,12 +211,18 @@ export default function Autocomplete() {
               <CancelIcon className="h-3 w-4 fill-slate-700" />
             </button>
           )}
-          <button
-            onClick={handleAskQuestion}
-            className="w-20 z-10 text-sm bg-[#d51b1e] absolute inset-y-0 right-1 m-1  text-center text-white"
-          >
-            Ask
-          </button>
+          {searchTerm ? (
+            <button
+              onClick={handleAskQuestion}
+              className="w-20 z-10 text-sm bg-[#d51b1e] absolute inset-y-0 right-1 m-1  text-center text-white"
+            >
+              Ask
+            </button>
+          ) : (
+            <span className="z-10 absolute inset-y-0 right-1 m-1 text-center pt-1">
+              <SearchIcon />
+            </span>
+          )}
         </div>
       </div>
 
