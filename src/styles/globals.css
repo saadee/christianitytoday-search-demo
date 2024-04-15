@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Abhaya Libre';
+  src: url('../../public/font/AbhayaLibre-ExtraBold.ttf') format('truetype'); /* Adjust the path to your font file */
+  font-weight: 800; /* Adjust the font weight */
+  font-style: normal;
+}
+
+
+/* For WebKit based browsers */
+/* You may need to add vendor prefixes for cross-browser compatibility */
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light grey */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Grey */
+  border-radius: 10px; /* Rounded corners */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Dark grey */
+}
+
+/* Slimmer scrollbar */
+::-webkit-scrollbar {
+  width: 6px; /* Adjust as needed */
+  height: 6px; /* Adjust as needed */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /* background-color: rgb(244, 244, 249); */
+  color: rgb(65, 65, 65);
+  font-family: "Gothic A1", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 640px;
+  width: 100%;
+}
+
+:root {
+  --aa-detached-modal-media-query: (min-width: 500px); /* Customize as needed */
+}
+
+/* .aa-PanelLayout {
+  display: flex;
+} */
+
+@media (min-width: 1024px) {
+  .aa-PanelLayout {
+    display: flex;
+  }
+  .aa-Source[data-autocomplete-source-id="products"] {
+    max-width: 450px !important;
+  }
+
+  .questionsAndThought {
+    border-top: none !important; /* Remove top border */
+    border-bottom: none !important; /* Remove bottom border */
+    border-right: 2px solid #f5f5f5 !important; /* Add right border */
+    border-left: 2px solid #f5f5f5 !important; /* Add left border */
+  }
+}
+
+.homepageHeading {
+  font-family: "Abhaya Libre" !important;
+}
+
+.aa-Source[data-autocomplete-source-id="weaviateSearch"] > ul {
+  /* Your CSS styles here */
+  overflow-y: scroll;
+  max-height: 500px;
+  padding-right: 10px;
+}
+
+.text-weaviate {
+  font-family: "Gothic A1" !important;
+  font-weight: 400;
+  font-size: large;
+  line-height: 24px;
+  color: #000000;
+}
+.text-product {
+  font-family: "Gothic A1" !important;
+  font-weight: 400;
+  font-size: large;
+  line-height: 26px;
+  color: #000000;
+}
+.text-questions {
+  font-family: "Avenir-Book" !important;
+}
+
+#questions {
+  justify-content: unset !important;
+}
+
+.aa-SourceHeaderTitle {
+  font-family: "Avenir-Book" !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #000000 !important;
+  padding-bottom: 0.5rem;
+  line-height: 13.66px;
+}
+
+.questionsAndThought {
+  border-top: 2px solid #f5f5f5;
+  border-bottom: 2px solid #f5f5f5;
+  border-left: none;
+  border-right: none;
+}
+
+.aa-PanelLayout,
+.aa-Panel--scrollable {
+  padding: 2rem 1rem 2rem 1rem !important;
+}
+
+#autocomplete-1-questionsAndThoughts-list.aa-List {
+  padding: 0 1rem 0 1rem;
+}
+#autocomplete-1-questionsAndThoughts-list.aa-List > :not(:last-child) {
+  border-bottom: 2px solid #f5f5f5;
+}
+.italic > mark {
+  font-style: italic !important;
+}
+
