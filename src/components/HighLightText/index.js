@@ -14,7 +14,7 @@ const HighlightText = ({ text, searchTerm }) => {
           key={index}
           className={
             part.toLowerCase() === searchTerm.toLowerCase()
-              ? " font-semibold"
+              ? "bg-yellow-200 font-bold"
               : ""
           }
         >

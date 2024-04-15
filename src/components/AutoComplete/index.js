@@ -247,7 +247,7 @@ export default function Autocomplete() {
           >
             <div className="overflow-hidden shadow-lg ring-1 ring-black/5">
               <div
-                className={`relative grid gap-3 bg-white p-7 grid-cols-12 border border-red-900s ${
+                className={`relative grid gap-3 bg-white px-2 py-5 grid-cols-12 border border-red-900s ${
                   isAskQuestion && "max-w-xl m-auto"
                 }`}
               >
