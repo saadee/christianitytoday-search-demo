@@ -1,20 +1,29 @@
 import React from "react";
 
-const HighlightText = ({ text, searchTerm }) => {
+const HighlightText = ({
+  text,
+  searchTerm,
+  highlightText = true,
+  className,
+  onClick,
+}) => {
   //   console.log(text, searchTerm);
   if (!searchTerm || searchTerm === "") {
-    return <p className="px-2 ">{text}</p>;
+    return <p className={className ? className : "px-2"}>{text}</p>;
   }
 
   const parts = text?.split(new RegExp(`(${searchTerm})`, "gi"));
   return (
-    <p className="px-2 w-full text-product">
+    <p
+      className={className ? className : "px-2 w-full text-product"}
+      onClick={onClick}
+    >
       {parts?.map((part, index) => (
         <span
           key={index}
           className={
             part.toLowerCase() === searchTerm.toLowerCase()
-              ? "bg-yellow-200 font-bold"
+              ? `font-bold ${highlightText ? "bg-yellow-200" : ""}`
               : ""
           }
         >

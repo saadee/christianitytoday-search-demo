@@ -1,14 +1,13 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
-import Image from "next/image";
+import { useState, useEffect, Fragment, useRef } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import algoliasearch from "algoliasearch";
 import SimpleBar from "simplebar-react";
-import { ProductItem } from "../ProductItem";
 import { QuestionAndThought } from "../QuestionAndThought";
 import { WeaviateSearch } from "../Weaviate/WeaviateSearch";
 import { WeaviateSearchSkeleton } from "../Weaviate/Skeleton";
 import CancelIcon from "../icons/Cancel";
 import SearchIcon from "../icons/SearchIcon";
+import { CtSearchBubble } from "../CtSearchBubble";
 
 // ===>> Client API_KEYS <<====
 const appId = process.env.NEXT_PUBLIC_APP_ID;
@@ -34,6 +33,7 @@ export default function Autocomplete() {
   const [ctSearches, setCtSearches] = useState([]);
   const [weaviateData, setWeaviateData] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [selectedBubble, setSelectedBubble] = useState(null);
 
   const [snippetQuery, setSnippetQuery] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
@@ -182,12 +182,20 @@ export default function Autocomplete() {
     setSearchTerm("");
     setQuestionAsked("");
     setSelectedQuestion(null);
+    setSelectedBubble(null)
     setIsAskQuestion(false);
   };
-
+  
+  const handleBubbleClick = (hit) => {
+    setSelectedQuestion(null);
+    setSelectedBubble(hit);
+    setQuestionAsked(hit);
+  };
+  
   const handleQuestionClick = (hit) => {
+    setSelectedBubble(null)
     setSelectedQuestion(hit);
-    setQuestionAsked(searchTerm);
+    setQuestionAsked(hit);
   };
 
   return (
@@ -302,11 +310,15 @@ export default function Autocomplete() {
                           {ctSearches?.length > 0 && (
                             <div className="mb-4">
                               {ctSearches?.map((ques, i) => (
-                                <p
-                                  key={i}
-                                  className="inline-block bg-[#F8F8F7] px-5 py-2 m-1 text-xs font-bold rounded-full"
-                                >
-                                  {ques}
+                                <p key={i} className="inline-block">
+                                  <CtSearchBubble
+                                    hit={ques}
+                                    searchTerm={searchTerm}
+                                    highlightText={false}
+                                    newSnippetQuery={setSnippetQuery}
+                                    selected={selectedBubble === ques}
+                                    onClick={() => handleBubbleClick(ques)}
+                                  />
                                 </p>
                               ))}
                             </div>
