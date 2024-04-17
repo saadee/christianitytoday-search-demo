@@ -295,7 +295,7 @@ export default function Autocomplete() {
                 }`}
               >
                 {!isAskQuestion && (
-                  <div className="col-span-12 md:col-span-7 min-h-[500px] h-full">
+                  <div className="col-span-12 md:col-span-6 min-h-[500px] h-full">
                     <div className="grid grid-cols-12 gap-3">
                       {/* <div className="col-span-12 md:col-span-5">
                         <h1 className="mb-3 ml-2 aa-SourceHeaderTitle flex items-center gap-4">
@@ -393,7 +393,7 @@ export default function Autocomplete() {
                 )}
                 <div
                   className={`col-span-12 ${
-                    isAskQuestion ? "md:col-span-12" : "md:col-span-5"
+                    isAskQuestion ? "md:col-span-12" : "md:col-span-6"
                   } ${
                     !isAskQuestion ? "border-[#f5f5f5]" : "border-transparent"
                   } border-t md:border-t-0 pt-4 md:pt-0 md:pl-2`}
