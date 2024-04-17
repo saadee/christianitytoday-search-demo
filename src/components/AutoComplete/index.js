@@ -299,16 +299,18 @@ export default function Autocomplete() {
                           Question & Thoughts
                         </h1> */}
                         <div className="relative">
-                          <div className="mb-4">
-                            {ctSearches.map((ques, i) => (
-                              <p
-                                key={i}
-                                className="inline-block bg-[#F8F8F7] px-5 py-2 m-1 text-xs font-bold rounded-full"
-                              >
-                                {ques}
-                              </p>
-                            ))}
-                          </div>
+                          {ctSearches?.length > 0 && (
+                            <div className="mb-4">
+                              {ctSearches?.map((ques, i) => (
+                                <p
+                                  key={i}
+                                  className="inline-block bg-[#F8F8F7] px-5 py-2 m-1 text-xs font-bold rounded-full"
+                                >
+                                  {ques}
+                                </p>
+                              ))}
+                            </div>
+                          )}
 
                           <SimpleBar className="max-h-[300px] md:max-h-[600px]">
                             {questions?.map((question, i) => (
