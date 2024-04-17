@@ -16,15 +16,22 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const TGBCbooksIndex = process.env.NEXT_PUBLIC_TGBC_BOOKS_INDEX;
 const GoodBookQuestionsIndex =
   process.env.NEXT_PUBLIC_GOOD_BOOK_QUESTIONS_INDEX;
+const CtIndex = process.env.NEXT_PUBLIC_CT_SEARCH_INDEX;
 
 const searchClient = algoliasearch(appId, apiKey);
 const BookSearchIndex = searchClient.initIndex(TGBCbooksIndex);
 const QuestionIndex = searchClient.initIndex(GoodBookQuestionsIndex);
+const CtSearchIndex = searchClient.initIndex(CtIndex);
+
+const extractQuestionsAnswered = (arr) => {
+  return arr.map((obj) => obj["Questions Answered"]);
+};
 
 export default function Autocomplete() {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [ctSearches, setCtSearches] = useState([]);
   const [weaviateData, setWeaviateData] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
@@ -41,6 +48,7 @@ export default function Autocomplete() {
     if (!isAskQuestion) {
       searchBooks();
       searchQuestions();
+      Ctsearches();
     }
   }, [isAskQuestion]);
 
@@ -51,7 +59,7 @@ export default function Autocomplete() {
         // Perform search logic here
         searchBooks(searchTerm);
         searchQuestions(searchTerm);
-        //   searchBooks(searchTerm);
+        Ctsearches(searchTerm);
       }, 500); // Adjust the debounce delay here (in milliseconds)
 
       return () => clearTimeout(timer);
@@ -155,6 +163,12 @@ export default function Autocomplete() {
   const searchQuestions = async (query) => {
     const { hits } = await QuestionIndex.search(query || "");
     setQuestions(hits);
+  };
+  const Ctsearches = async (query) => {
+    const { hits } = await CtSearchIndex.search(query || "");
+    const questionsAnsweredArray = extractQuestionsAnswered(hits);
+    const slicedArray = questionsAnsweredArray.slice(0, 8);
+    setCtSearches(slicedArray);
   };
 
   const combineQuestions = (dataArray) => {
@@ -284,7 +298,18 @@ export default function Autocomplete() {
                           <div className="h-[1.5px] w-6 bg-[#859E3B]" />
                           Question & Thoughts
                         </h1> */}
-                        <div className="">
+                        <div className="relative">
+                          <div className="mb-4">
+                            {ctSearches.map((ques, i) => (
+                              <p
+                                key={i}
+                                className="inline-block bg-[#F8F8F7] px-5 py-2 m-1 text-xs font-bold rounded-full"
+                              >
+                                {ques}
+                              </p>
+                            ))}
+                          </div>
+
                           <SimpleBar className="max-h-[300px] md:max-h-[600px]">
                             {questions?.map((question, i) => (
                               <div key={i} className="max-w-full">
@@ -315,7 +340,7 @@ export default function Autocomplete() {
                     Snippets
                   </h1> */}
                   <div className="">
-                    <SimpleBar className="max-h-[300px] md:max-h-[600px]">
+                    <SimpleBar className="max-h-[300px] md:max-h-[800px]">
                       {isLoading ? (
                         // If isLoading is true, render the skeleton component
                         <div className="flex-row gap-3">

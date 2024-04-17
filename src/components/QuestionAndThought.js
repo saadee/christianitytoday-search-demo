@@ -12,7 +12,7 @@ export function QuestionAndThought({
   selected,
   onClick,
 }) {
-  console.log({hit})
+  // console.log({hit})
   const para = hit["Questions Answered"];
 
   return (

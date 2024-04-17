@@ -14,7 +14,7 @@ export function WeaviateSearch({ hit, components }) {
     year,
   } = hit;
 
-  console.log({ booktitle, holder });
+  // console.log({ booktitle, holder });
   const q = hit["Questions Answered"];
 
   return (
