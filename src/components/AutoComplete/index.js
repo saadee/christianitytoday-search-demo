@@ -164,11 +164,24 @@ export default function Autocomplete() {
     const { hits } = await QuestionIndex.search(query || "");
     setQuestions(hits);
   };
+
   const Ctsearches = async (query) => {
     const { hits } = await CtSearchIndex.search(query || "");
     const questionsAnsweredArray = extractQuestionsAnswered(hits);
-    const slicedArray = questionsAnsweredArray.slice(0, 8);
-    setCtSearches(slicedArray);
+
+      // const slicedArray = questionsAnsweredArray.slice(0, 8);
+
+    const arrays = questionsAnsweredArray.reduce((acc, curr, index) => {
+      const arrayIndex = index % 3; // Distribute items into three arrays
+      if (!acc[arrayIndex]) {
+        acc[arrayIndex] = []; // Initialize array if it doesn't exist
+      }
+      acc[arrayIndex].push(curr);
+      return acc;
+    }, []);
+
+    // Now 'arrays' either contains three separate arrays or one array
+    setCtSearches(arrays); // Update state with the array of arrays
   };
 
   const combineQuestions = (dataArray) => {
@@ -182,18 +195,18 @@ export default function Autocomplete() {
     setSearchTerm("");
     setQuestionAsked("");
     setSelectedQuestion(null);
-    setSelectedBubble(null)
+    setSelectedBubble(null);
     setIsAskQuestion(false);
   };
-  
+
   const handleBubbleClick = (hit) => {
     setSelectedQuestion(null);
     setSelectedBubble(hit);
     setQuestionAsked(hit);
   };
-  
+
   const handleQuestionClick = (hit) => {
-    setSelectedBubble(null)
+    setSelectedBubble(null);
     setSelectedQuestion(hit);
     setQuestionAsked(hit);
   };
@@ -213,6 +226,8 @@ export default function Autocomplete() {
             onChange={(e) => {
               setSearchTerm(e.target.value);
               setIsAskQuestion(false);
+              setSelectedBubble(null);
+              setSelectedQuestion(null);
             }}
             onFocus={() => setIsOpen(true)} // Open popover on focus
           />
@@ -275,12 +290,12 @@ export default function Autocomplete() {
           >
             <div className="overflow-hidden shadow-lg ring-1 ring-black/5">
               <div
-                className={`relative grid gap-3 bg-white px-2 py-5 grid-cols-12 border border-red-900s ${
+                className={`relative grid bg-white py-5 grid-cols-12 border border-red-900s ${
                   isAskQuestion && "max-w-xl m-auto"
                 }`}
               >
                 {!isAskQuestion && (
-                  <div className="col-span-12 md:col-span-6 min-h-[500px] h-full">
+                  <div className="col-span-12 md:col-span-7 min-h-[500px] h-full">
                     <div className="grid grid-cols-12 gap-3">
                       {/* <div className="col-span-12 md:col-span-5">
                         <h1 className="mb-3 ml-2 aa-SourceHeaderTitle flex items-center gap-4">
@@ -307,22 +322,56 @@ export default function Autocomplete() {
                           Question & Thoughts
                         </h1> */}
                         <div className="relative">
-                          {ctSearches?.length > 0 && (
-                            <div className="mb-4">
-                              {ctSearches?.map((ques, i) => (
-                                <p key={i} className="inline-block">
-                                  <CtSearchBubble
-                                    hit={ques}
-                                    searchTerm={searchTerm}
-                                    highlightText={false}
-                                    newSnippetQuery={setSnippetQuery}
-                                    selected={selectedBubble === ques}
-                                    onClick={() => handleBubbleClick(ques)}
-                                  />
-                                </p>
-                              ))}
+                          <SimpleBar className="pb-4 pt-2 flex-row w-full overflow-x-auto max-h-60">
+                            <div className="flex flex-nowrap gap-3">
+                              {ctSearches &&
+                                ctSearches.length > 0 &&
+                                ctSearches[0]?.map((ques, i) => (
+                                  <div key={i} className="flex-shrink-0">
+                                    <CtSearchBubble
+                                      hit={ques}
+                                      searchTerm={searchTerm}
+                                      highlightText={false}
+                                      newSnippetQuery={setSnippetQuery}
+                                      selected={selectedBubble === ques}
+                                      onClick={() => handleBubbleClick(ques)}
+                                    />
+                                  </div>
+                                ))}
                             </div>
-                          )}
+                            <div className="flex flex-nowrap gap-3">
+                              {ctSearches &&
+                                ctSearches.length > 0 &&
+                                ctSearches[1]?.map((ques, i) => (
+                                  <div key={i} className="flex-shrink-0">
+                                    <CtSearchBubble
+                                      hit={ques}
+                                      searchTerm={searchTerm}
+                                      highlightText={false}
+                                      newSnippetQuery={setSnippetQuery}
+                                      selected={selectedBubble === ques}
+                                      onClick={() => handleBubbleClick(ques)}
+                                    />
+                                  </div>
+                                ))}
+                            </div>
+                            <div className="flex flex-nowrap gap-3">
+                              {ctSearches &&
+                                ctSearches.length > 0 &&
+                                ctSearches[2]?.map((ques, i) => (
+                                  <div key={i} className="flex-shrink-0">
+                                    <CtSearchBubble
+                                      hit={ques}
+                                      searchTerm={searchTerm}
+                                      highlightText={false}
+                                      newSnippetQuery={setSnippetQuery}
+                                      selected={selectedBubble === ques}
+                                      onClick={() => handleBubbleClick(ques)}
+                                    />
+                                  </div>
+                                ))}
+                            </div>
+                          </SimpleBar>
 
                           <SimpleBar className="max-h-[300px] md:max-h-[600px]">
                             {questions?.map((question, i) => (
@@ -344,7 +393,7 @@ export default function Autocomplete() {
                 )}
                 <div
                   className={`col-span-12 ${
-                    isAskQuestion ? "md:col-span-12" : "md:col-span-6"
+                    isAskQuestion ? "md:col-span-12" : "md:col-span-5"
                   } ${
                     !isAskQuestion ? "border-[#f5f5f5]" : "border-transparent"
                   } border-t md:border-t-0 pt-4 md:pt-0 md:pl-2`}
@@ -368,7 +417,7 @@ export default function Autocomplete() {
                       ) : weaviateData && weaviateData.length > 0 ? (
                         // If isLoading is false and data exists, render the actual data
                         weaviateData.map((data, i) => (
-                          <div key={i}>
+                          <div key={i} className="pr-2">
                             <WeaviateSearch hit={data} />
                           </div>
                         ))

@@ -9,15 +9,14 @@ export function CtSearchBubble({
   onClick,
 }) {
   return (
-    <div className="inline-block"
+    <div className="w-full"
       onClick={() => {
         onClick();
-        console.log("first");
         newSnippetQuery(hit);
       }}
     >
       <HighlightText
-        className={`inline-block px-5 py-2 m-1 text-xs rounded-full cursor-pointer ${
+        className={`px-5 py-2 m-1 text-xs rounded-full cursor-pointer w-full ${
           selected ? "bg-slate-200" : "bg-[#F8F8F7]"
         } ${!searchTerm ? "font-bold" : ""}`}
         highlightText={highlightText}
