@@ -200,8 +200,8 @@ export default function Autocomplete() {
       arrays.push(arr);
     });
 
-    console.log({ arrays });
-    console.log({ questionsAnsweredArray });
+    // console.log({ arrays });
+    // console.log({ questionsAnsweredArray });
 
     // Now 'arrays' either contains three separate arrays or one array
     setCtSearches(arrays); // Update state with the array of arrays
