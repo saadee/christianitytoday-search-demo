@@ -169,16 +169,39 @@ export default function Autocomplete() {
     const { hits } = await CtSearchIndex.search(query || "");
     const questionsAnsweredArray = extractQuestionsAnswered(hits);
 
-      // const slicedArray = questionsAnsweredArray.slice(0, 8);
+    // const slicedArray = questionsAnsweredArray.slice(0, 8);
 
-    const arrays = questionsAnsweredArray.reduce((acc, curr, index) => {
-      const arrayIndex = index % 3; // Distribute items into three arrays
-      if (!acc[arrayIndex]) {
-        acc[arrayIndex] = []; // Initialize array if it doesn't exist
-      }
-      acc[arrayIndex].push(curr);
-      return acc;
-    }, []);
+    const arrays = [];
+    const numberOfArrays = 3; // Total number of arrays
+
+    // Calculate the length of each pattern
+    const patternLength = Math.ceil(
+      questionsAnsweredArray.length / numberOfArrays
+    );
+
+    // Initialize the patterns array
+    const patterns = Array.from({ length: numberOfArrays }, (_, index) => {
+      return Array.from(
+        { length: patternLength },
+        (_, i) => index + i * numberOfArrays
+      );
+    });
+
+    // Trim the patterns to match the actual length of questionsAnsweredArray
+    patterns.forEach((pattern) => {
+      pattern.length = Math.min(pattern.length, questionsAnsweredArray.length);
+    });
+
+    // Create the arrays based on the patterns
+    patterns.forEach((pattern) => {
+      const arr = pattern
+        .map((index) => questionsAnsweredArray[index])
+        .filter((value) => value !== null && value !== undefined); // Filter out null values
+      arrays.push(arr);
+    });
+
+    console.log({ arrays });
+    console.log({ questionsAnsweredArray });
 
     // Now 'arrays' either contains three separate arrays or one array
     setCtSearches(arrays); // Update state with the array of arrays
