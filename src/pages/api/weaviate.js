@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   const { query } = req.query;
-  const apiUrl = `${process.env.WAVEVIATE_API_DOMAIN}/all/${query}?field=publisher&value=Ligonier%20Ministries`;
+  const apiUrl = `${process.env.WAVEVIATE_API_DOMAIN}/all/${query}?field=publisher&value=Christianity%20Today`;
 
   try {
     const response = await fetch(apiUrl);
